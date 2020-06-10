@@ -1,0 +1,48 @@
+{% set name = "HEXRD" %}
+{% set version = "0.7.6" %}
+
+package:
+  name: {{ name|lower }}
+  version: {{ version }}
+
+source:
+  url: https://github.com/HEXRD/hexrd/archive/v{{ version }}.tar.gz
+  # sha256 is the preferred checksum -- you can get it for a file with:
+  #  `openssl sha256 <file name>`.
+  sha256: e3b800213b8e896021acc1148a27168e8f6df93587f1ae11dafb6d702ba25501
+
+build:
+  number: 0
+  skip: true  # [py<38]
+  script:
+    - export SETUPTOOLS_SCM_PRETEND_VERSION={{ version }}
+    - {{ PYTHON }} setup.py install --single-version-externally-managed --record=record.txt
+
+requirements:
+  build:
+    - python
+    - numpy
+    - python
+    - setuptools
+    - setuptools_scm
+
+  run:
+    - python
+    - h5py
+    - numba
+    - numpy
+    - psutil
+    - pyyaml
+    - scipy
+    - scikit-image
+    - scikit-learn
+
+test:
+  imports:
+    - hexrd
+
+about:
+  home: https://github.com/HEXRD/hexrd
+  license: BSD-3-Clause
+  license_family: BSD
+  summary: 'High energy diffraction data analysis'
